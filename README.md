@@ -44,7 +44,7 @@ forward OnPlayerEndMining(playerid, class, Float:Amount);
 forward OnPlayerStartMining(playerid);
 ```
 
-### Letting Player Mine
+### How To Let Player Mine
 
 If you want to let player mine stone. You have to use function: `PlayerCanMine(playerid, bool:value);`
 Example :
