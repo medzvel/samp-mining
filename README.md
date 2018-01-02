@@ -5,7 +5,7 @@ Dynamic Mining System Framework.
 
 ### How To Install
 
-Put mine.inc and MINE folder in pawn > includes.
+Put `mine.inc` and `MINE` folder in `pawno` > `includes`.
 
 After that do this in your gamemode.
 
