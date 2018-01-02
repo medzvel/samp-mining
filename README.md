@@ -59,7 +59,7 @@ Stone class will be choosen randomly.
 
 ## Contributing
 
-If you have any idea, to improve this script, feel free to do this. After doing some fix or Finding any bug make issue or pull request.
+If you have any idea, to improve this script, feel free to do this. After doing some fix or Finding any bug please open issue or make pull request.
 
 
 ## Authors
