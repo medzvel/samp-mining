@@ -2,7 +2,7 @@
 	MINING stYSTEM FRAMEWORK - UTILS
 	Last Update - 8/25/2017
 	Script Version - 0.1
-	Created By Codeah (2017)
+	Created By Amagida (2017)
 */
 #define PICKAXEOBJ 18635
 
