@@ -11,5 +11,5 @@
 #include <YSI\y_hooks>
 
 // internal
-#include "MINE\mineingutils.pwn"
+#include "MINE\miningutils.pwn"
 #include "MINE\miningplayer.pwn"

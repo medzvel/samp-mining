@@ -23,6 +23,7 @@
 
 enum Stone
 {
+	sID,
 	Float:stX,
 	Float:stY,
 	Float:stZ,
@@ -34,10 +35,12 @@ enum Stone
 }
 
 static
-	Stones[MAX_STONES][Stone],
 	Stone_Name[4][MAX_STONE_NAME],
+	Stone_Color[4][16];
+
+new
+	Stones[MAX_STONES][Stone],
 	StonePricePerGram[4],
-	Stone_Color[4][16],
 	CreatedStones = 0,
 	goldgenerated = 0,
 	diamondgenerated = 0;
@@ -114,7 +117,7 @@ stock CreateDiamondStone(Float:x, Float:y, Float:z, name = 3)
 		"dkcargoshp_las2", "Diamondp64", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-	GetStoneColour(name, stonecolor);
+	GetStoneColor(name, stonecolor);
 
 	format(string, sizeof(string),
 		"{%s}%s\n{73E774}Grams: {FFFFFF}%f",
@@ -143,7 +146,7 @@ stock CreateGoldStone(Float:x, Float:y, Float:z, name = 2)
 	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 8463, "vgseland", "tiadbuddhagold", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-	GetStoneColour(name, stonecolor);
+	GetStoneColor(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
@@ -166,7 +169,7 @@ stock DestroyStone(stoneid)
 
 	DestroyDynamicObject(Stones[stoneid][sObject]);
 	DestroyDynamic3DTextLabel(Stones[stoneid][sLabel]);
-	
+
 	return 0;
 }
 
@@ -203,7 +206,7 @@ stock CreateNormalStone(Float:x, Float:y, Float:z, name = 1)
 	SetObjectMaterial(Stones[CreatedStones][sObject], 0, 18202, "w_towncs_t", "hatwall256hi", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-	GetStoneColour(name, stonecolor);
+	GetStoneColor(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
@@ -300,7 +303,9 @@ stock DebugStone(stone)
 
 	printf("DEBUG : Stone ID %d", ID);
 
-	new Float:x, Float:y, Float:z;
+	new Float:x,
+		Float:y,
+		Float:z;
 
 	x = Stones[stone][stX];
 	y = Stones[stone][stY];
