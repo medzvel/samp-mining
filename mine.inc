@@ -10,5 +10,5 @@
 #include <streamer>
 #include <YSI\y_hooks>
 
-#include "MINE\mineingutils.pwn"
+#include "MINE\miningutils.pwn"
 #include "MINE\miningplayer.pwn"

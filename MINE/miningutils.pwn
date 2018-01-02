@@ -20,23 +20,14 @@ enum Stone
 {
 
 	sID,
-
-Float:stX,
-
-Float:stY,
-
-Float:stZ,
-
+	Float:stX,
+	Float:stY,
+	Float:stZ,
 	sClass,
-
-Float:sHP,
-
-Text3D:sLabel,
-
+	Float:sHP,
+	Text3D:sLabel,
 	sObject,
-
-bool:SomeoneMining
-
+	bool:SomeoneMining
 }	
 
 new Stones[MAX_STONES][Stone];
@@ -121,7 +112,7 @@ stock CreateDiamondStone(Float:x, Float:y, Float:z, name = 3)
 	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 5154, "dkcargoshp_las2", "Diamondp64", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-	GetStoneColour(name, stonecolor);
+	GetStoneColor(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f", stonecolor, stonename, Stones[CreatedStones][sHP]);
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
@@ -147,7 +138,7 @@ stock CreateGoldStone(Float:x, Float:y, Float:z, name = 2)
 	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 8463, "vgseland", "tiadbuddhagold", 0xFFFFFFFF);
 	
 	GetStoneName(name, stonename);
-	GetStoneColour(name, stonecolor);
+	GetStoneColor(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
@@ -157,29 +148,27 @@ stock CreateGoldStone(Float:x, Float:y, Float:z, name = 2)
 stock DestroyStone(stoneid)
 {
 
-	if(!IsValidStoneID(stoneid)) printf("[MINING ERROR] Stone ID Is Not Correct");
-	else{
+	if(IsValidStoneID(stoneid))
+	{
 		Stones[stoneid][stX] = 0.0;
-
 		Stones[stoneid][stY] = 0.0;
-
 		Stones[stoneid][stZ] = 0.0;
-
 		Stones[stoneid][sHP] = 0.0;
 
 		DestroyDynamicObject(Stones[stoneid][sObject]);
-
 		DestroyDynamic3DTextLabel(Stones[stoneid][sLabel]);
+	}
+	else
+	{
+		printf("[MINING ERROR] Stone ID Is Not Correct");
 	}
 }
 
 
 stock IsValidStoneID(stoneid)
 {
-
 	if(stoneid > CreatedStones && stoneid !> 1) return true;
 	else false;
-
 }
 
 stock GetStoneID(stone)
@@ -206,7 +195,7 @@ stock CreateNormalStone(Float:x, Float:y, Float:z, name = 1)
 	SetObjectMaterial(Stones[CreatedStones][sObject], 0, 18202, "w_towncs_t", "hatwall256hi", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-	GetStoneColour(name, stonecolor);
+	GetStoneColor(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
@@ -317,12 +306,12 @@ stock DebugStone(stone)
 	
 	printf("DEBUG : Stone ID %d", ID);
 
-	new Float:x, Float:y, Float:z;
+	new Float:x, 
+		Float:y, 
+		Float:z;
 
 	x = Stones[stone][stX];
-
 	y = Stones[stone][stY]; 
-
 	z = Stones[stone][stZ];
 
 	printf("DEBUG : Position of Stone ID %d \n X : %f \n Y : %f \n Z : %f", ID, x, y, z);

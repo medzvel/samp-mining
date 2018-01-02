@@ -1,8 +1,6 @@
 #include <YSI\y_hooks>
 #include <progress2>
 
-//Namespace
-#define Mine:: mine_
 
 //Callbacks
 forward OnPlayerEndMining(playerid,class, Float:Amount);
@@ -20,13 +18,18 @@ new PlayerText:MINEPLAYERTD[MAX_PLAYERS][1];
 //MINING BAR
 new PlayerBar:MiningBar[MAX_PLAYERS], Float:MiningValue[MAX_PLAYERS];
 
-//MINING VARIABLES FOR PLAYER
-new bool:PlayerIsMining[MAX_PLAYERS];
-new MiningTimer[MAX_PLAYERS];
-new Float:MinedGrams[MAX_PLAYERS];
-new Float:CheckStoneLeftGrams[MAX_PLAYERS];
-new bool:Mine::PlayerCanMine;
-new PlayerIsMiningStoenID[MAX_PLAYERS];
+
+enum playerMiningInfoEnum
+{
+    bool:isMining,
+    Float:minedGrams,
+    Float:gramsLeft,
+    timerID,
+    stoneID,
+    bool:CanMine
+}
+
+new playerMiningInfo[MAX_PLAYERS][playerMiningInfoEnum];
 
 hook OnGameModeInit()
 {
@@ -37,7 +40,7 @@ hook OnGameModeInit()
 hook OnPlayerConnect(playerid)
 {
 	CreateMiningPlayerTD(playerid);
-	PlayerIsMining[playerid] = false;
+	playerMiningInfo[playerid][isMining] = false;
 	MiningBar[playerid] = CreatePlayerProgressBar(playerid, 276.000000, 335.000000, 141.000000, 24.700000, -1429936641, 40.0000, 0); 
 	return 1;
 }
@@ -50,8 +53,8 @@ StartMiningActionForPlayer(playerid)
 	PlayerTextDrawShow(playerid, MINEPLAYERTD[playerid][0]);
 	ShowPlayerProgressBar(playerid, MiningBar[playerid]);
 	TogglePlayerControllable(playerid, 0);
-	PlayerIsMining[playerid] = true;
-	MiningTimer[playerid] = SetTimerEx("CheckMiningValue", 350, true, "i", playerid);
+	playerMiningInfo[playerid][isMining] = true;
+	playerMiningInfo[playerid][timerID] = SetTimerEx("CheckMiningValue", 350, true, "i", playerid);
 	//ApplyAnimation(playerid, "CHAINSAW", "CSAW_1", 4.1, 1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "CHAINSAW", "CSAW_1", 4.1, 1, 1, 1, 1, 1, 1);
 }
@@ -63,12 +66,12 @@ CancelMiningActionForPlayer(playerid)
 	PlayerTextDrawHide(playerid, MINEPLAYERTD[playerid][0]);
 	HidePlayerProgressBar(playerid, MiningBar[playerid]);
 	TogglePlayerControllable(playerid, 1);
-	PlayerIsMining[playerid] = false;
+	playerMiningInfo[playerid][isMining] = false;
 	MiningValue[playerid] = 0;
 	SetPlayerProgressBarValue(playerid, MiningBar[playerid], MiningValue[playerid]);
-	KillTimer(MiningTimer[playerid]);
+	KillTimer(playerMiningInfo[playerid][timerID]);
 	SetPlayerSpecialAction(playerid,0);
-	Stones[PlayerIsMiningStoenID[playerid]][SomeoneMining] = false;
+	Stones[playerMiningInfo[playerid][stoneID]][SomeoneMining] = false;
 }
 
 forward CheckMiningValue(playerid);
@@ -86,13 +89,13 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	if(newkeys == 1024)
 	{
 		for(new i; i<CreatedStones; i++)
-		if(IsPlayerInRangeOfPoint(playerid, 2.0, Stones[i][stX], Stones[i][stY], Stones[i][stZ]) && !PlayerIsMining[playerid])
+		if(IsPlayerInRangeOfPoint(playerid, 2.0, Stones[i][stX], Stones[i][stY], Stones[i][stZ]) && !playerMiningInfo[playerid][isMining])
 		{	
 			new string[164];
 			if(Stones[i][sHP] <= 0.0) return SendClientMessage(playerid, -1, "[MINING ERROR] This stone is already mined!");
 			if(Stones[i][SomeoneMining]) return SendClientMessage(playerid, -1, "[MINING ERROR] Someone is already mining this stone!");
 			if(funcidx("OnPlayerStartMining") != -1) CallLocalFunction("OnPlayerStartMining","d",playerid);
-			if(Mine::PlayerCanMine)
+			if(playerMiningInfo[playerid][CanMine])
 			{
 				switch(Stones[i][sClass])
 				{
@@ -114,7 +117,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				}
 				GetStoneName(Stones[i][sClass], string);
 				PlayerTextDrawSetString(playerid, MINEPLAYERTD[playerid][0], string);
-				PlayerIsMiningStoenID[playerid] = i;
+				playerMiningInfo[playerid][stoneID] = i;
 				Stones[i][SomeoneMining] = true;
 				StartMiningActionForPlayer(playerid);
 			}	
@@ -124,7 +127,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	{
 		for(new i; i<CreatedStones; i++)
 		{
-			if(IsPlayerInRangeOfPoint(playerid, 2.0, Stones[i][stX], Stones[i][stY], Stones[i][stZ]) && PlayerIsMining[playerid])
+			if(IsPlayerInRangeOfPoint(playerid, 2.0, Stones[i][stX], Stones[i][stY], Stones[i][stZ]) && playerMiningInfo[playerid][isMining])
 			{
 				switch(Stones[i][sClass])
 				{
@@ -137,10 +140,10 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				if(MiningValue[playerid] >= GetPlayerProgressBarMaxValue(playerid, MiningBar[playerid]))
 				{
 					CancelMiningActionForPlayer(playerid);
-					MinedGrams[playerid] = frandom(10.0, 5.5);
-					CheckStoneLeftGrams[playerid] = Stones[i][sHP] - MinedGrams[playerid];
-					if(CheckStoneLeftGrams[playerid] < 0.0) MinedGrams[playerid] = Stones[i][sHP];
-					Stones[i][sHP] = Stones[i][sHP] - MinedGrams[playerid];
+					playerMiningInfo[playerid][minedGrams] = frandom(10.0, 5.5);
+					playerMiningInfo[playerid][gramsLeft] = Stones[i][sHP] - playerMiningInfo[playerid][minedGrams];
+					if(playerMiningInfo[playerid][gramsLeft] < 0.0) playerMiningInfo[playerid][minedGrams] = Stones[i][sHP];
+					Stones[i][sHP] = Stones[i][sHP] - playerMiningInfo[playerid][minedGrams];
 					if(Stones[i][sHP] <= 0.0)
 					{
 						Stones[i][sHP] = 0.0;
@@ -154,11 +157,11 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					}
 					new string[126], stonename[34], stonecolour[14];
 					GetStoneName(Stones[i][sClass], stonename);
-					GetStoneColour(Stones[i][sClass], stonecolour);
+					GetStoneColor(Stones[i][sClass], stonecolour);
 					format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolour, stonename, Stones[i][sHP]);
 					UpdateDynamic3DTextLabelText(Stones[i][sLabel], 0xFFFF00FF, string);
-					if(funcidx("OnPlayerEndMining") != -1) CallLocalFunction("OnPlayerEndMining","ddf",playerid,Stones[i][sClass], MinedGrams[playerid]);
-					MinedGrams[playerid] = 0.0;
+					if(funcidx("OnPlayerEndMining") != -1) CallLocalFunction("OnPlayerEndMining","ddf",playerid,Stones[i][sClass], playerMiningInfo[playerid][minedGrams]);
+					playerMiningInfo[playerid][minedGrams] = 0.0;
 				}
 
 			}
@@ -168,7 +171,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	{
 		for(new i; i<CreatedStones; i++)
 		{
-			if(IsPlayerInRangeOfPoint(playerid, 2.0, Stones[i][stX], Stones[i][stY], Stones[i][stZ]) && PlayerIsMining[playerid])
+			if(IsPlayerInRangeOfPoint(playerid, 2.0, Stones[i][stX], Stones[i][stY], Stones[i][stZ]) && playerMiningInfo[playerid][isMining])
 			{
 				CancelMiningActionForPlayer(playerid);
 			}
@@ -218,4 +221,17 @@ CreateMiningPlayerTD(playerid)
 	PlayerTextDrawFont(playerid, MINEPLAYERTD[playerid][0], 1);
 	PlayerTextDrawSetProportional(playerid, MINEPLAYERTD[playerid][0], 1);
 	PlayerTextDrawSetShadow(playerid, MINEPLAYERTD[playerid][0], 0);
+}
+
+
+stock PlayerCanMine(playerid, bool:value)
+{
+	if(value)
+	{
+		playerMiningInfo[playerid][CanMine] = true;
+	}
+	else
+	{
+		playerMiningInfo[playerid][CanMine] = false;
+	}
 }
