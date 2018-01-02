@@ -6,9 +6,6 @@
 */
 
 
-// stuff
-#include <streamer>
-#include <YSI\y_hooks>
 
 #include "MINE\miningutils.pwn"
 #include "MINE\miningplayer.pwn"

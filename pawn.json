@@ -1,0 +1,12 @@
+{
+	"user": "medzvel",
+	"repo": "samp-mining",
+	"entry": "test.pwn",
+	"output": "test.amx",
+	"dependencies": [
+		"maddinat0r/sscanf",
+		"samp-incognito/samp-streamer-plugin",
+		"Misiur/YSI-Includes",
+		"Southclaws/progress2"
+	]
+}
