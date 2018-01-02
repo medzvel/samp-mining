@@ -45,6 +45,25 @@ forward OnPlayerEndMining(playerid,class, Float:Amount);
 forward OnPlayerStartMining(playerid);
 ```
 
+### Letting Player Mine
+
+If you want to let player mine stone. You have to use function: `PlayerCanMine(playerid, bool:value);`
+Example :
+
+```
+public OnPlayerStartMining(playerid)
+{
+    if(GetPlayerScore(playerid) < 3)
+    {
+        PlayerCanMine(playerid, false);
+    }
+    else
+    {
+        PlayerCanMine(playerid, true);
+    }
+}    
+```
+
 ## Loading stones from file
 
 Create file in scriptfiles. Name it what you want. Under `OnGameModeInit()` write `LoadStones("FileName");`
