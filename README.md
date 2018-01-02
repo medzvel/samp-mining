@@ -15,7 +15,7 @@ After that do this in your gamemode.
 
 ### Functions
 
-Functions Which You Need For Using This Framework
+Functions to use this library.
 
 ```
 forward CreateGoldStone(Float:x, Float:y, Float:z, name = 2);
