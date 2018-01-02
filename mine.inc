@@ -6,6 +6,6 @@
 */
 
 
-
+// internal
 #include "MINE\miningutils.pwn"
 #include "MINE\miningplayer.pwn"
