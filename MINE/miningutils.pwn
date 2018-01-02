@@ -4,57 +4,45 @@
 	Script Version - 0.1
 	Created By Amagida (2017)
 */
-#define PICKAXEOBJ 18635
 
+#if !defined PICKAXE_MODEL
+	#define PICKAXE_MODEL (18635)
+#endif
 
+#if !defined MAIN_STONE_MODEL
+	#define MAIN_STONE_MODEL (3930)
+#endif
 
-#define MAINSTONEOBJECT 3930
-
-#define MAX_STONES 500
+#if !defined MAX_STONES
+	#define MAX_STONES (500)
+#endif
 
 #if !defined MAX_STONE_NAME
-	#define MAX_STONE_NAME		(32)
+	#define MAX_STONE_NAME (32)
 #endif
 
 enum Stone
 {
-
-	sID,
-
-Float:stX,
-
-Float:stY,
-
-Float:stZ,
-
+	Float:stX,
+	Float:stY,
+	Float:stZ,
 	sClass,
-
-Float:sHP,
-
-Text3D:sLabel,
-
+	Float:sHP,
+	Text3D:sLabel,
 	sObject,
+	bool:SomeoneMining
+}
 
-bool:SomeoneMining
-
-}	
-
-new Stones[MAX_STONES][Stone];
-
-
-static Stone_Name[4][MAX_STONE_NAME];
-
-new StonePricePerGram[4];
-
-static Stone_Color[4][16];
-
-new CreatedStones = 0;
-
-new goldgenerated = 0;
-new diamondgenerated = 0;
+static
+	Stones[MAX_STONES][Stone],
+	Stone_Name[4][MAX_STONE_NAME],
+	StonePricePerGram[4],
+	Stone_Color[4][16],
+	CreatedStones = 0,
+	goldgenerated = 0,
+	diamondgenerated = 0;
 
 
-/* FORWARDS */
 forward CreateGoldStone(Float:x, Float:y, Float:z, name = 2);
 forward CreateNormalStone(Float:x, Float:y, Float:z, name = 1);
 forward CreateDiamondStone(Float:x, Float:y, Float:z, name = 3);
@@ -88,8 +76,6 @@ stock minrand(min, max) //By Alex "Y_Less" Cole
 }
 /* END OF USED TOOLS */
 
-
-
 stock CreateStone(class,Float:x, Float:y, Float:z)
 {
 	if(class < 1) return printf("Class Can't Be Less Then 1!");
@@ -101,92 +87,103 @@ stock CreateStone(class,Float:x, Float:y, Float:z)
 	}
 
 	return 1;
-} 
+}
 
 stock CreateDiamondStone(Float:x, Float:y, Float:z, name = 3)
 {
-	new stonename[36], stonecolor[16], string[126];
+	new
+		stonename[36],
+		stonecolor[16],
+		string[126];
 
-	CreatedStones++;
-
-	Stones[CreatedStones][sID] = CreatedStones;
 	Stones[CreatedStones][stX] = x;
 	Stones[CreatedStones][stY] = y;
 	Stones[CreatedStones][stZ] = z;
 	Stones[CreatedStones][sClass] = 3;
 	Stones[CreatedStones][sHP] = frandom(100.0, 10.0);
-	Stones[CreatedStones][sObject] = CreateDynamicObject(MAINSTONEOBJECT,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
+	Stones[CreatedStones][sObject] = CreateDynamicObject(
+			MAIN_STONE_MODEL,
+			x, y, z,
+			0.000, 5.000, 0.000,
+			-1, -1, -1,
+			7777.777, 7777.777);
 	Stones[CreatedStones][SomeoneMining] = false;
 
-	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 5154, "dkcargoshp_las2", "Diamondp64", 0xFFFFFFFF);
+	SetDynamicObjectMaterial(
+		Stones[CreatedStones][sObject], 0, 5154,
+		"dkcargoshp_las2", "Diamondp64", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
 	GetStoneColour(name, stonecolor);
 
-	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f", stonecolor, stonename, Stones[CreatedStones][sHP]);
+	format(string, sizeof(string),
+		"{%s}%s\n{73E774}Grams: {FFFFFF}%f",
+		stonecolor, stonename, Stones[CreatedStones][sHP]);
+
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
 
+	return CreatedStones++;
 }
 
 stock CreateGoldStone(Float:x, Float:y, Float:z, name = 2)
 {
-	
-	new stonename[36], stonecolor[16], string[126];
+	new
+		stonename[36],
+		stonecolor[16],
+		string[126];
 
-	CreatedStones++;
-
-	Stones[CreatedStones][sID] = CreatedStones;
 	Stones[CreatedStones][stX] = x;
 	Stones[CreatedStones][stY] = y;
 	Stones[CreatedStones][stZ] = z;
 	Stones[CreatedStones][sClass] = 2;
 	Stones[CreatedStones][sHP] = frandom(100.0, 10.0);
-	Stones[CreatedStones][sObject] = CreateDynamicObject(MAINSTONEOBJECT,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
+	Stones[CreatedStones][sObject] = CreateDynamicObject(MAIN_STONE_MODEL,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
 	Stones[CreatedStones][SomeoneMining] = false;
 
 	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 8463, "vgseland", "tiadbuddhagold", 0xFFFFFFFF);
-	
+
 	GetStoneName(name, stonename);
 	GetStoneColour(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
 
+	return CreatedStones++;
 }
 
 stock DestroyStone(stoneid)
 {
-
-	if(!IsValidStoneID(stoneid)) printf("[MINING ERROR] Stone ID Is Not Correct");
-	else{
-		Stones[stoneid][stX] = 0.0;
-
-		Stones[stoneid][stY] = 0.0;
-
-		Stones[stoneid][stZ] = 0.0;
-
-		Stones[stoneid][sHP] = 0.0;
-
-		DestroyDynamicObject(Stones[stoneid][sObject]);
-
-		DestroyDynamic3DTextLabel(Stones[stoneid][sLabel]);
+	if(!IsValidStoneID(stoneid))
+	{
+		printf("[MINING ERROR] Stone ID Is Not Correct");
+		return 1;
 	}
-}
 
+	Stones[stoneid][stX] = 0.0;
+	Stones[stoneid][stY] = 0.0;
+	Stones[stoneid][stZ] = 0.0;
+	Stones[stoneid][sHP] = 0.0;
+
+	DestroyDynamicObject(Stones[stoneid][sObject]);
+	DestroyDynamic3DTextLabel(Stones[stoneid][sLabel]);
+	
+	return 0;
+}
 
 stock IsValidStoneID(stoneid)
 {
+	if(!(0 <= stoneid < CreatedStones))
+	{
+		return false;
+	}
 
-	if(stoneid > CreatedStones && stoneid !> 1) return true;
-	else false;
-
+	return true;
 }
 
 stock GetStoneID(stone)
 {
 	return Stones[stone][sID];
 }
-
 
 stock CreateNormalStone(Float:x, Float:y, Float:z, name = 1)
 {
@@ -200,9 +197,9 @@ stock CreateNormalStone(Float:x, Float:y, Float:z, name = 1)
 	Stones[CreatedStones][stZ] = z;
 	Stones[CreatedStones][sClass] = 1;
 	Stones[CreatedStones][sHP] = frandom(100.0, 10.0);
-	Stones[CreatedStones][sObject] = CreateDynamicObject(MAINSTONEOBJECT,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
+	Stones[CreatedStones][sObject] = CreateDynamicObject(MAIN_STONE_MODEL,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
 	Stones[CreatedStones][SomeoneMining] = false;
-	
+
 	SetObjectMaterial(Stones[CreatedStones][sObject], 0, 18202, "w_towncs_t", "hatwall256hi", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
@@ -212,21 +209,17 @@ stock CreateNormalStone(Float:x, Float:y, Float:z, name = 1)
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
 }
 
-
-
 stock SetStonePricePerGram(class, price)
 {
-	if(class > 4) 
+	if(class > 4)
 	{
 		print("[MINING ERROR] Class Can't Be More Then 4!");
 	}
 	else
-	{	
-		StonePricePerGram[class] = price;	
+	{
+		StonePricePerGram[class] = price;
 	}
 }
-
-
 
 stock GetStonePricePerGram(class)
 {
@@ -237,38 +230,31 @@ stock GetStonePricePerGram(class)
 	return StonePricePerGram[class];
 }
 
-
 stock GetMinedStonePrice(class, Float:grams)
 {
 	if(class > 4) return print("[MINING ERROR] Class Can't Be More Then 4!");
 	new Float:firststep;
 	firststep = GetStonePricePerGram(class) * grams;
 	new GeneratedPrice = floatround(firststep);
-	return GeneratedPrice;	
+	return GeneratedPrice;
 }
-
-
 
 stock SetStoneName(class, name[])
 {
 	strcat(Stone_Name[class], name);
 }
 
-
-
 stock SetStoneColor(class, color[])
 {
 	strcat(Stone_Color[class], color);
 }
-
-
 
 stock GetStoneName(class, out[], length = sizeof(out))
 {
     if(isnull(Stone_Name[class]))
     {
         printf("[MINEING ERROR] Stone Name For Class ID: %d, Not Found! Setting Stone Name To Default!", class);
-        
+
         GetStoneDefaultName(class, out,length);
     }
     else
@@ -277,10 +263,9 @@ stock GetStoneName(class, out[], length = sizeof(out))
     }
 }
 
-
 stock GetStoneDefaultName(class, out[], length = sizeof(out))
 {
-	if(class > 4) 
+	if(class > 4)
 	{
 		printf("[MINEING ERROR] Theres Class With ID %d",class);
 	}
@@ -304,29 +289,24 @@ stock GetStoneDefaultName(class, out[], length = sizeof(out))
 			{
 				strcat(out, "Diamond Ore", length);
 				SetStoneName(class, out);
-			} 
+			}
 		}
 	}
 }
 
-
 stock DebugStone(stone)
 {
-	
 	new ID = GetStoneID(stone);
-	
+
 	printf("DEBUG : Stone ID %d", ID);
 
 	new Float:x, Float:y, Float:z;
 
 	x = Stones[stone][stX];
-
-	y = Stones[stone][stY]; 
-
+	y = Stones[stone][stY];
 	z = Stones[stone][stZ];
 
 	printf("DEBUG : Position of Stone ID %d \n X : %f \n Y : %f \n Z : %f", ID, x, y, z);
-	
 }
 
 
