@@ -64,7 +64,7 @@ public OnPlayerEndMining(playerid, class, Float:Amount)
 {
 	new colorstr[24], 
 		stonestr[36],
-		string[64];
+		string[164];
 
 	GetStoneName(class, stonestr);
 	GetStoneColor(class, colorstr);
