@@ -4,7 +4,12 @@ Dynamic Mining System Framework.
 
 ## How To Install
 
-Put `mine.inc` and `MINE` folder in `pawno` > `includes`.
+Put `mine.inc` and `MINE` folder in `pawno` > `includes` or use sampctl.
+
+Example:
+```
+sampctl package install medzvel/samp-mining
+```
 
 After that do this in your gamemode.
 
@@ -74,6 +79,11 @@ StonePositions(2562.507812,-1529.606811,1399.841064);
 ```
 
 Stone class will be choosen randomly.
+
+## Video
+
+[YOUTUBE](https://www.youtube.com/watch?v=q8p9kh3lUSE&t=48s)
+
 
 ## Contributing
 
