@@ -49,7 +49,7 @@ forward OnPlayerStartMining(playerid);
 
 Create file in scriptfiles. Name it what you want. Under `OnGameModeInit()` write `LoadStones("FileName");`
 
-At this moment, LoadStones function is still under development. Right now if you want to load stones from file, in file you would write positions with this format: `StonePositions(x, y, z);`
+At this moment, `LoadStones` function is still under development. Right now if you want to load stones from file, in file you would write positions with this format: `StonePositions(x, y, z);`
 
 ```
 StonePositions(2562.507812,-1529.606811,1399.841064);
