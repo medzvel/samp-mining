@@ -110,29 +110,20 @@ stock CreateDiamondStone(Float:x, Float:y, Float:z, name = 3)
 	CreatedStones++;
 
 	Stones[CreatedStones][sID] = CreatedStones;
-
 	Stones[CreatedStones][stX] = x;
-
 	Stones[CreatedStones][stY] = y;
-
 	Stones[CreatedStones][stZ] = z;
-
 	Stones[CreatedStones][sClass] = 3;
-
 	Stones[CreatedStones][sHP] = frandom(100.0, 10.0);
-
 	Stones[CreatedStones][sObject] = CreateDynamicObject(MAINSTONEOBJECT,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
-
 	Stones[CreatedStones][SomeoneMining] = false;
 
 	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 5154, "dkcargoshp_las2", "Diamondp64", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-
 	GetStoneColour(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f", stonecolor, stonename, Stones[CreatedStones][sHP]);
-
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
 
 }
@@ -145,29 +136,20 @@ stock CreateGoldStone(Float:x, Float:y, Float:z, name = 2)
 	CreatedStones++;
 
 	Stones[CreatedStones][sID] = CreatedStones;
-
 	Stones[CreatedStones][stX] = x;
-
 	Stones[CreatedStones][stY] = y;
-
 	Stones[CreatedStones][stZ] = z;
-
 	Stones[CreatedStones][sClass] = 2;
-
 	Stones[CreatedStones][sHP] = frandom(100.0, 10.0);
-
 	Stones[CreatedStones][sObject] = CreateDynamicObject(MAINSTONEOBJECT,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
-
 	Stones[CreatedStones][SomeoneMining] = false;
 
 	SetDynamicObjectMaterial(Stones[CreatedStones][sObject], 0, 8463, "vgseland", "tiadbuddhagold", 0xFFFFFFFF);
 	
 	GetStoneName(name, stonename);
-
 	GetStoneColour(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
-
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
 
 }
@@ -213,29 +195,20 @@ stock CreateNormalStone(Float:x, Float:y, Float:z, name = 1)
 	CreatedStones++;
 
 	Stones[CreatedStones][sID] = CreatedStones;
-
 	Stones[CreatedStones][stX] = x;
-
 	Stones[CreatedStones][stY] = y;
-
 	Stones[CreatedStones][stZ] = z;
-
 	Stones[CreatedStones][sClass] = 1;
-
 	Stones[CreatedStones][sHP] = frandom(100.0, 10.0);
-
 	Stones[CreatedStones][sObject] = CreateDynamicObject(MAINSTONEOBJECT,x,y,z,0.000,5.000,0.000,-1,-1,-1,7777.777,7777.777);
-
 	Stones[CreatedStones][SomeoneMining] = false;
 	
 	SetObjectMaterial(Stones[CreatedStones][sObject], 0, 18202, "w_towncs_t", "hatwall256hi", 0xFFFFFFFF);
 
 	GetStoneName(name, stonename);
-
 	GetStoneColour(name, stonecolor);
 
 	format(string, sizeof(string), "{%s}%s\n{73E774}Grams: {FFFFFF}%f",stonecolor, stonename, Stones[CreatedStones][sHP]);
-
 	Stones[CreatedStones][sLabel] = CreateDynamic3DTextLabel(string, 0xFFFF00FF, x, y, z, 2.0);
 }
 
