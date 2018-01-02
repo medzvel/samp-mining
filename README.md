@@ -83,6 +83,7 @@ If you have any idea, to improve this script, feel free to do this. After doing 
 
 * **Medzvel** - _Initial work_ - [Medzvel](https://github.com/medzvel)
 * **Southclaws** _Some major changes_ - [Southclaws](https://github.com/Southclaws)
+
 See also the list of [contributors](https://github.com/medzvel/SA-MP-Mining/graphs/contributors) who participated in this project.
 
 ## License
