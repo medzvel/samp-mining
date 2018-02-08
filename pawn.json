@@ -6,7 +6,7 @@
 	"dependencies": [
 		"maddinat0r/sscanf",
 		"samp-incognito/samp-streamer-plugin",
-		"Misiur/YSI-Includes",
+		"pawn-lang/YSI-Includes",
 		"Southclaws/progress2"
 	]
 }
